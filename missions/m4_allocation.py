@@ -34,6 +34,8 @@ def run(verbose: bool = True) -> dict:
 
     # write a FOCUS-style export (first 50 rows as a sample)
     focus = allocation.to_focus_rows(priced[:50])
+    # Group the sample by owner for easier showback review.
+    focus.sort(key=lambda row: (row["Tags"]["team"], row["Tags"]["project"], row["BilledCost"]))
     out_path = os.path.join(ROOT, "outputs", "focus_export.csv")
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, "w", newline="") as f:
