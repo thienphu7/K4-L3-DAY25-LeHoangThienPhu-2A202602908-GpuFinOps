@@ -29,9 +29,12 @@ def main() -> int:
 
     prompt = "GPU FinOps means measuring cost in dollars per million tokens, because"
     ids = tok(prompt, return_tensors="pt")
-    t0 = time.time()
-    out = model.generate(**ids, max_new_tokens=64, do_sample=False)
-    dt = time.time() - t0
+    model.eval()
+    with torch.inference_mode():
+        model.generate(**ids, max_new_tokens=8, do_sample=False, pad_token_id=tok.eos_token_id)
+        t0 = time.perf_counter()
+        out = model.generate(**ids, max_new_tokens=64, do_sample=False, pad_token_id=tok.eos_token_id)
+        dt = time.perf_counter() - t0
     new_tokens = out.shape[-1] - ids["input_ids"].shape[-1]
     tps = new_tokens / dt if dt > 0 else 0.0
 
@@ -41,7 +44,8 @@ def main() -> int:
 
     print(f"model={model_id}  new_tokens={new_tokens}  time={dt:.2f}s")
     print(f"REAL throughput: {tps:.1f} tok/s on CPU")
-    print(f"REAL ~${cost_per_1m:,.2f}/1M-token  (vs sim small-model ~$0.30/1M-token)")
+    print(f"Estimated ~${cost_per_1m:,.2f}/1M output tokens at assumed CPU ${rate_hr}/hr (not an actual bill)")
+    print("Warm-up excluded; tiny model is a throughput demo, not quality-equivalent to the simulated model.")
     print("Takeaway: tok/s and utilization drive $/token far more than the sticker $/hr.")
     return 0
 

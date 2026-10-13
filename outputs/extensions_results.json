@@ -1,0 +1,124 @@
+{
+  "reasoning": {
+    "groups": {
+      "reasoning": {
+        "requests": 201,
+        "cost_usd": 1.3964642500000009,
+        "energy_wh": 29787.744000000002
+      },
+      "normal": {
+        "requests": 2199,
+        "cost_usd": 7.08815872,
+        "energy_wh": 1887.5613000000005
+      }
+    },
+    "reasoning_traffic_pct": 8.375,
+    "reasoning_cost_pct": 16.45876611061718,
+    "cap_fraction": 0.1,
+    "rerouted_requests": 0,
+    "baseline_cost_usd": 8.48462297,
+    "optimized_cost_usd": 8.48462297,
+    "baseline_energy_wh": 31675.305300000004,
+    "optimized_energy_wh": 31675.305300000004,
+    "assumption": "Fixed tokens; reroute excess reasoning to small/non-reasoning. Quality not measured; first-N proxy, not confidence-based routing."
+  },
+  "reasoning_cap_5pct": {
+    "groups": {
+      "reasoning": {
+        "requests": 201,
+        "cost_usd": 1.3964642500000009,
+        "energy_wh": 29787.744000000002
+      },
+      "normal": {
+        "requests": 2199,
+        "cost_usd": 7.08815872,
+        "energy_wh": 1887.5613000000005
+      }
+    },
+    "reasoning_traffic_pct": 8.375,
+    "reasoning_cost_pct": 16.45876611061718,
+    "cap_fraction": 0.05,
+    "rerouted_requests": 81,
+    "baseline_cost_usd": 8.48462297,
+    "optimized_cost_usd": 8.03023797,
+    "baseline_energy_wh": 31675.305300000004,
+    "optimized_energy_wh": 20311.321200000006,
+    "assumption": "Fixed tokens; reroute excess reasoning to small/non-reasoning. Quality not measured; first-N proxy, not confidence-based routing."
+  },
+  "carbon": {
+    "jobs": [
+      {
+        "job_id": "job-train-llm",
+        "energy_wh": 1568000.0,
+        "baseline_carbon_g": 595840.0,
+        "clean_carbon_g": 47040.0
+      },
+      {
+        "job_id": "job-train-embed",
+        "energy_wh": 80000.0,
+        "baseline_carbon_g": 30400.0,
+        "clean_carbon_g": 2400.0
+      },
+      {
+        "job_id": "job-finetune",
+        "energy_wh": 25200.0,
+        "baseline_carbon_g": 9576.0,
+        "clean_carbon_g": 756.0
+      },
+      {
+        "job_id": "job-dev-sandbox",
+        "energy_wh": 52800.0,
+        "baseline_carbon_g": 20064.0,
+        "clean_carbon_g": 1584.0
+      },
+      {
+        "job_id": "job-batch-eval",
+        "energy_wh": 63000.0,
+        "baseline_carbon_g": 23940.0,
+        "clean_carbon_g": 1890.0
+      }
+    ],
+    "regions": [
+      {
+        "region": "us-east-1",
+        "price_usd_kwh": 0.12,
+        "carbon_g_kwh": 380,
+        "electricity_usd": 214.67999999999998,
+        "carbon_g": 679820.0
+      },
+      {
+        "region": "us-west-2",
+        "price_usd_kwh": 0.07,
+        "carbon_g_kwh": 120,
+        "electricity_usd": 125.23000000000002,
+        "carbon_g": 214680.0
+      },
+      {
+        "region": "europe-north1",
+        "price_usd_kwh": 0.09,
+        "carbon_g_kwh": 30,
+        "electricity_usd": 161.01,
+        "carbon_g": 53670.0
+      },
+      {
+        "region": "europe-central2",
+        "price_usd_kwh": 0.18,
+        "carbon_g_kwh": 660,
+        "electricity_usd": 322.02,
+        "carbon_g": 1180740.0
+      },
+      {
+        "region": "us-east-wa",
+        "price_usd_kwh": 0.055,
+        "carbon_g_kwh": 90,
+        "electricity_usd": 98.395,
+        "carbon_g": 161010.0
+      }
+    ],
+    "cleanest": "europe-north1",
+    "cheapest": "us-east-wa",
+    "carbon_saved_g": 626150.0,
+    "electricity_saved_usd": 53.66999999999999,
+    "assumption": "Catalog watts at full rated power; same hours in each region. Electricity only, not GPU rental; latency/transfer costs excluded."
+  }
+}

@@ -29,14 +29,14 @@ def build_report(baseline_usd: float, optimized_usd: float, levers: dict,
             "",
             f"- Energy per query: {sustainability.get('wh_per_query', 0):.2f} Wh",
             f"- Carbon per query: {sustainability.get('carbon_g', 0):.3f} gCO2e",
-            f"- Cheapest+cleanest region: {sustainability.get('best_region', 'n/a')}",
+            f"- Cleanest region (catalog): {sustainability.get('best_region', 'n/a')}",
         ]
     lines += ["", "_Figures are June-2026 as-of snapshots; re-baseline before acting._"]
     return "\n".join(lines)
 
 
-def savings_waterfall(levers: dict, path: str) -> str:
-    """Write a simple savings bar chart PNG. Returns the path. No-op if matplotlib absent."""
+def savings_waterfall(levers: dict, path: str, baseline_usd: float = None) -> str:
+    """Write a savings chart; include baseline and optimized waterfall when provided."""
     try:
         import matplotlib
         matplotlib.use("Agg")
@@ -46,7 +46,23 @@ def savings_waterfall(levers: dict, path: str) -> str:
     names = list(levers.keys())
     vals = [levers[n] for n in names]
     fig, ax = plt.subplots(figsize=(8, 4.5))
-    ax.bar(names, vals, color="#2e548a")
+    if baseline_usd is None:
+        ax.bar(names, vals, color="#2e548a")
+    else:
+        remaining = baseline_usd
+        labels = ["Baseline"] + names + ["Optimized"]
+        ax.bar(0, remaining, color="#2e548a")
+        ax.text(0, remaining, f"${remaining:,.0f}", ha="center", va="bottom")
+        for i, (name, value) in enumerate(levers.items(), 1):
+            ax.bar(i, value, bottom=remaining-value, color="#459c75")
+            ax.plot([i-1, i], [remaining, remaining], color="gray", linewidth=.8)
+            ax.text(i, remaining, f"−${value:,.0f}", ha="center", va="bottom", fontsize=8)
+            remaining -= value
+        ax.bar(len(labels)-1, remaining, color="#2e548a")
+        ax.text(len(labels)-1, remaining, f"${remaining:,.0f}", ha="center", va="bottom")
+        ax.set_xticks(range(len(labels)))
+        ax.set_xticklabels(labels)
+        ax.set_ylim(0, baseline_usd*1.15)
     ax.set_ylabel("Savings (USD / month)")
     ax.set_title("GPU cost savings by FinOps lever")
     plt.xticks(rotation=20, ha="right")

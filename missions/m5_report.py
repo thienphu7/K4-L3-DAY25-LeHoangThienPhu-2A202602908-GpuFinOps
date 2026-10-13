@@ -53,11 +53,20 @@ def run(verbose: bool = True) -> dict:
     }
 
     md = report.build_report(baseline, optimized, levers, sustainability=sust)
+    from missions.extensions import run as run_extensions
+    run_extensions(verbose=False)
+    for filename in ("writeup.md", "extensions_report.md"):
+        with open(os.path.join(ROOT, "outputs", filename)) as section:
+            md += "\n\n" + section.read()
+    bonus_summary = os.path.join(ROOT, "outputs", "bonus_report.md")
+    if os.path.exists(bonus_summary):
+        with open(bonus_summary) as section:
+            md += "\n\n" + section.read()
     out_md = os.path.join(ROOT, "outputs", "report.md")
     os.makedirs(os.path.dirname(out_md), exist_ok=True)
     with open(out_md, "w") as f:
         f.write(md)
-    png = report.savings_waterfall(levers, os.path.join(ROOT, "outputs", "savings.png"))
+    png = report.savings_waterfall(levers, os.path.join(ROOT, "outputs", "savings.png"), baseline_usd=baseline)
 
     if verbose:
         print("== M5 Optimization Report ==")

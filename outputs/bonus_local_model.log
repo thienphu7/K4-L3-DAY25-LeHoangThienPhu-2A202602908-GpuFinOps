@@ -1,0 +1,7 @@
+/Users/saithutrang/Documents/thienphu/K4-L3-DAY25-LeHoangThienPhu-2A202602908-GpuFinOps/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+model=sshleifer/tiny-gpt2  new_tokens=64  time=0.05s
+REAL throughput: 1340.4 tok/s on CPU
+Estimated ~$0.02/1M output tokens at assumed CPU $0.1/hr (not an actual bill)
+Warm-up excluded; tiny model is a throughput demo, not quality-equivalent to the simulated model.
+Takeaway: tok/s and utilization drive $/token far more than the sticker $/hr.

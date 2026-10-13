@@ -1,0 +1,15 @@
+{
+  "tracker": {
+    "exit_code": 0,
+    "completed": true
+  },
+  "local_model": {
+    "exit_code": 0,
+    "completed": true
+  },
+  "observability": {
+    "http_status": 200,
+    "gpus": 11,
+    "mode": "Python exporter HTTP scrape; Docker/Grafana not run (Docker unavailable)"
+  }
+}
